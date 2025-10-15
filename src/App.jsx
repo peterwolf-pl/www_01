@@ -71,8 +71,8 @@ function App() {
       <div className="content">
         <header className="header">
           <BlurText
-            text="strony internetowe"
-            delay={150}
+            text="strony internetowe, sklepy internetowe, pozycjonowanie, wdrożenia AI"
+            delay={250}
             animateBy="words"
             direction="top"
             onAnimationComplete={handleAnimationComplete}
@@ -99,9 +99,7 @@ function App() {
           </section>
         </main>
         <footer className="footer">
-          <p className="footer__caption">
-            peterwolf.pl
-          </p>
+          <p className="footer__caption">peterwolf.pl</p>
         </footer>
       </div>
     </div>

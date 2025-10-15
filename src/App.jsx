@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 import CardNav from './components/CardNav.jsx';
+import BlurText from './components/BlurText.jsx';
 import FallingText from './components/FallingText.jsx';
 import Hyperspeed from './components/Hyperspeed.jsx';
 import MagicBento from './components/MagicBento.jsx';
@@ -13,30 +14,12 @@ const navItems = [
   { label: 'Wsparcie', description: 'Dowiedz się, jak możemy Ci pomóc.' },
 ];
 
-const highlights = [
-  {
-    title: 'Analityka w czasie rzeczywistym',
-    description: 'Śledź najważniejsze wskaźniki i reaguj zanim konkurencja zauważy zmiany.',
-    accent: 'Aktywne monitorowanie',
-  },
-  {
-    title: 'Automatyzacje i przepływy',
-    description: 'Zaprojektuj inteligentne procesy, które wykonają powtarzalne zadania za Ciebie.',
-    accent: 'Oszczędność czasu',
-  },
-  {
-    title: 'Współpraca zespołowa',
-    description: 'Zapraszaj współpracowników, dziel się tablicami i pracuj w jednym miejscu.',
-    accent: 'Zgrane zespoły',
-  },
-  {
-    title: 'Bezpieczeństwo klasy enterprise',
-    description: 'Zabezpieczenia wielopoziomowe, zgodność z RODO oraz audyty w standardzie.',
-    accent: 'Spokój głowy',
-  },
-];
 
 function App() {
+  const handleAnimationComplete = () => {
+    console.log('Animation completed!');
+  };
+
   const hyperspeedOptions = useMemo(
     () => ({
       ...hyperspeedPresets.one,
@@ -65,12 +48,18 @@ function App() {
       </div>
       <div className="content">
         <header className="header">
-          
+          <BlurText
+            text="strony internetowe, sklepy internetowe, pozycjonowanie, wdrożenia AI"
+            delay={250}
+            animateBy="words"
+            direction="top"
+            onAnimationComplete={handleAnimationComplete}
+            className="header__title"
+          />
         </header>
-        
-           <main className="main" aria-labelledby="magic-bento">
-           <MagicBento id="magic-bento" items={highlights} />
 
+        <main className="main" aria-labelledby="magic-bento">
+        
           <section className="profile-card-section" aria-label="Profil projektanta">
             <ProfileCard
               name="Peter Wolf"
@@ -87,9 +76,7 @@ function App() {
           </section>
         </main>
         <footer className="footer">
-          <p className="footer__caption">
-            peterwolf.pl
-          </p>
+          <p className="footer__caption">peterwolf.pl</p>
         </footer>
       </div>
     </div>

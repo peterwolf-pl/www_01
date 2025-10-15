@@ -9,10 +9,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "ogl": "^0.0.110",
     "prop-types": "^15.8.1",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "three": "^0.161.0",
+    "postprocessing": "^6.35.3"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^4.0.0",

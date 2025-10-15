@@ -1,6 +1,8 @@
+import { useMemo } from 'react';
 import CardNav from './components/CardNav.jsx';
-import LightRays from './components/LightRays.jsx';
+import Hyperspeed from './components/Hyperspeed.jsx';
 import MagicBento from './components/MagicBento.jsx';
+import { hyperspeedPresets } from './components/hyperspeedPresets.js';
 
 const navItems = [
   { label: 'Start', description: 'Wprowadzenie i skrót najważniejszych informacji.' },
@@ -33,21 +35,31 @@ const highlights = [
 ];
 
 function App() {
+  const hyperspeedOptions = useMemo(
+    () => ({
+      ...hyperspeedPresets.one,
+      lightStickWidth: [...hyperspeedPresets.one.lightStickWidth],
+      lightStickHeight: [...hyperspeedPresets.one.lightStickHeight],
+      movingAwaySpeed: [...hyperspeedPresets.one.movingAwaySpeed],
+      movingCloserSpeed: [...hyperspeedPresets.one.movingCloserSpeed],
+      carLightsLength: [...hyperspeedPresets.one.carLightsLength],
+      carLightsRadius: [...hyperspeedPresets.one.carLightsRadius],
+      carWidthPercentage: [...hyperspeedPresets.one.carWidthPercentage],
+      carShiftX: [...hyperspeedPresets.one.carShiftX],
+      carFloorSeparation: [...hyperspeedPresets.one.carFloorSeparation],
+      colors: {
+        ...hyperspeedPresets.one.colors,
+        leftCars: [...hyperspeedPresets.one.colors.leftCars],
+        rightCars: [...hyperspeedPresets.one.colors.rightCars],
+      },
+    }),
+    []
+  );
+
   return (
     <div className="app">
-      <div className="light-rays-wrapper" aria-hidden="true">
-        <LightRays
-          raysOrigin="top-center"
-          raysColor="#00ffff"
-          raysSpeed={1.5}
-          lightSpread={0.8}
-          rayLength={1.2}
-          followMouse
-          mouseInfluence={0.1}
-          noiseAmount={0.1}
-          distortion={0.05}
-          className="custom-rays"
-        />
+      <div className="hyperspeed-wrapper" aria-hidden="true">
+        <Hyperspeed effectOptions={hyperspeedOptions} />
       </div>
       <div className="content">
         <header className="header">

@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 import CardNav from './components/CardNav.jsx';
+import BlurText from './components/BlurText.jsx';
 import FallingText from './components/FallingText.jsx';
 import Hyperspeed from './components/Hyperspeed.jsx';
 import MagicBento from './components/MagicBento.jsx';
@@ -37,6 +38,10 @@ const highlights = [
 ];
 
 function App() {
+  const handleAnimationComplete = () => {
+    console.log('Animation completed!');
+  };
+
   const hyperspeedOptions = useMemo(
     () => ({
       ...hyperspeedPresets.one,
@@ -65,11 +70,18 @@ function App() {
       </div>
       <div className="content">
         <header className="header">
-          
+          <BlurText
+            text="strony internetowe"
+            delay={150}
+            animateBy="words"
+            direction="top"
+            onAnimationComplete={handleAnimationComplete}
+            className="header__title"
+          />
         </header>
-        
-           <main className="main" aria-labelledby="magic-bento">
-           <MagicBento id="magic-bento" items={highlights} />
+
+        <main className="main" aria-labelledby="magic-bento">
+          <MagicBento id="magic-bento" items={highlights} />
 
           <section className="profile-card-section" aria-label="Profil projektanta">
             <ProfileCard

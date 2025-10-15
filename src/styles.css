@@ -68,6 +68,16 @@ body {
   padding: clamp(1.5rem, 4vw, 2.5rem) 0;
 }
 
+.header__title {
+  margin: 0;
+  font-size: clamp(2.75rem, 7vw, 4.5rem);
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  text-align: center;
+  color: rgba(248, 251, 255, 0.92);
+}
+
 .card-nav-shell {
   position: relative;
   width: min(980px, 100%);

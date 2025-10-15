@@ -14,28 +14,6 @@ const navItems = [
   { label: 'Wsparcie', description: 'Dowiedz się, jak możemy Ci pomóc.' },
 ];
 
-const highlights = [
-  {
-    title: 'Analityka w czasie rzeczywistym',
-    description: 'Śledź najważniejsze wskaźniki i reaguj zanim konkurencja zauważy zmiany.',
-    accent: 'Aktywne monitorowanie',
-  },
-  {
-    title: 'Automatyzacje i przepływy',
-    description: 'Zaprojektuj inteligentne procesy, które wykonają powtarzalne zadania za Ciebie.',
-    accent: 'Oszczędność czasu',
-  },
-  {
-    title: 'Współpraca zespołowa',
-    description: 'Zapraszaj współpracowników, dziel się tablicami i pracuj w jednym miejscu.',
-    accent: 'Zgrane zespoły',
-  },
-  {
-    title: 'Bezpieczeństwo klasy enterprise',
-    description: 'Zabezpieczenia wielopoziomowe, zgodność z RODO oraz audyty w standardzie.',
-    accent: 'Spokój głowy',
-  },
-];
 
 function App() {
   const handleAnimationComplete = () => {
@@ -81,8 +59,7 @@ function App() {
         </header>
 
         <main className="main" aria-labelledby="magic-bento">
-          <MagicBento id="magic-bento" items={highlights} />
-
+        
           <section className="profile-card-section" aria-label="Profil projektanta">
             <ProfileCard
               name="Peter Wolf"

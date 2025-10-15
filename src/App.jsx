@@ -3,6 +3,7 @@ import CardNav from './components/CardNav.jsx';
 import FallingText from './components/FallingText.jsx';
 import Hyperspeed from './components/Hyperspeed.jsx';
 import MagicBento from './components/MagicBento.jsx';
+import ProfileCard from './components/ProfileCard.jsx';
 import { hyperspeedPresets } from './components/hyperspeedPresets.js';
 
 const navItems = [
@@ -80,6 +81,9 @@ function App() {
               fontSize="2rem"
               mouseConstraintStiffness={0.9}
             />
+          </section>
+          <section className="profile-card-section" aria-label="Profil projektantki">
+            <ProfileCard />
           </section>
         </main>
         <footer className="footer">

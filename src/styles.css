@@ -125,6 +125,12 @@ body {
   width: min(900px, 100%);
 }
 
+.profile-card-section {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
 .magic-bento {
   display: flex;
   flex-direction: column;

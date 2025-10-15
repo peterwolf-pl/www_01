@@ -1,99 +1,314 @@
-import Lanyard from './Lanyard.jsx';
+import React, { useEffect, useRef, useCallback, useMemo } from 'react';
 import './ProfileCard.css';
 
-const socialIcons = {
-  dribbble: (
-    <svg viewBox="0 0 24 24" aria-hidden="true">
-      <path d="M12 2.25A9.75 9.75 0 1 0 21.75 12 9.76 9.76 0 0 0 12 2.25Zm6.88 8.12a16.62 16.62 0 0 0-5.31-.34 28.06 28.06 0 0 0-1.3-2.9 7.26 7.26 0 0 1 6.61 3.24ZM9.2 4.26a28.86 28.86 0 0 1 2.67 4.45 22.54 22.54 0 0 0-7.3 1.26 7.29 7.29 0 0 1 4.63-5.71ZM4.26 14.8a7.16 7.16 0 0 1 0-5.6 20.32 20.32 0 0 1 7.62-1.45 25.36 25.36 0 0 1 1.63 3.36 16.52 16.52 0 0 0-6.83 5.69 7.25 7.25 0 0 1-2.42-1ZM9.8 19.73a7.13 7.13 0 0 1-4-2.41 14.94 14.94 0 0 1 6.23-5 26.24 26.24 0 0 1 1.79 6.18 7.28 7.28 0 0 1-4.02 1.23Zm5.66-.73a27.54 27.54 0 0 0-1.64-5.64 14.76 14.76 0 0 1 4.72.6 7.26 7.26 0 0 1-3.08 5.04Z" />
-    </svg>
-  ),
-  github: (
-    <svg viewBox="0 0 24 24" aria-hidden="true">
-      <path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34a2.65 2.65 0 0 0-1.11-1.46c-.91-.62.07-.6.07-.6a2.1 2.1 0 0 1 1.53 1 2.14 2.14 0 0 0 2.93.83 2.14 2.14 0 0 1 .63-1.34c-2.22-.25-4.55-1.11-4.55-4.94a3.88 3.88 0 0 1 1-2.68 3.6 3.6 0 0 1 .1-2.65s.84-.27 2.75 1a9.5 9.5 0 0 1 5 0c1.9-1.28 2.74-1 2.74-1a3.6 3.6 0 0 1 .11 2.65 3.87 3.87 0 0 1 1 2.68c0 3.85-2.34 4.68-4.57 4.93a2.4 2.4 0 0 1 .69 1.85v2.74c0 .26.18.57.69.47A10 10 0 0 0 12 2Z" />
-    </svg>
-  ),
-  twitter: (
-    <svg viewBox="0 0 24 24" aria-hidden="true">
-      <path d="M21 5.92a6.44 6.44 0 0 1-1.77.49 3.08 3.08 0 0 0 1.36-1.7 6.33 6.33 0 0 1-1.94.72 3.17 3.17 0 0 0-5.4 2.17 3.36 3.36 0 0 0 .08.73A9 9 0 0 1 4.5 4.9a3.16 3.16 0 0 0 1 4.23 3 3 0 0 1-1.44-.39v.04a3.17 3.17 0 0 0 2.54 3.11 3.2 3.2 0 0 1-1.44.05 3.17 3.17 0 0 0 3 2.19A6.36 6.36 0 0 1 3 16.51a8.94 8.94 0 0 0 4.85 1.42 9 9 0 0 0 9-9q0-.21-.01-.42A6.4 6.4 0 0 0 21 5.92Z" />
-    </svg>
-  ),
+const DEFAULT_BEHIND_GRADIENT =
+  'radial-gradient(farthest-side circle at var(--pointer-x) var(--pointer-y),hsla(266,100%,90%,var(--card-opacity)) 4%,hsla(266,50%,80%,calc(var(--card-opacity)*0.75)) 10%,hsla(266,25%,70%,calc(var(--card-opacity)*0.5)) 50%,hsla(266,0%,60%,0) 100%),radial-gradient(35% 52% at 55% 20%,#00ffaac4 0%,#073aff00 100%),radial-gradient(100% 100% at 50% 50%,#00c1ffff 1%,#073aff00 76%),conic-gradient(from 124deg at 50% 50%,#c137ffff 0%,#07c6ffff 40%,#07c6ffff 60%,#c137ffff 100%)';
+
+const DEFAULT_INNER_GRADIENT = 'linear-gradient(145deg,#60496e8c 0%,#71C4FF44 100%)';
+
+const ANIMATION_CONFIG = {
+  SMOOTH_DURATION: 600,
+  INITIAL_DURATION: 1500,
+  INITIAL_X_OFFSET: 70,
+  INITIAL_Y_OFFSET: 60,
+  DEVICE_BETA_OFFSET: 20
 };
 
-const ProfileCard = ({
-  name = 'Natalia Wójcik',
-  title = 'Lead Product Designer',
-  location = 'Warszawa, Polska',
-  summary = 'Projektuję doświadczenia, które łączą animacje, mikrointerakcje i klarowną strukturę informacji.',
-  availability = 'Dostępna od lipca 2024',
-  skills = ['Design systems', 'Motion UI', 'Accessibility', 'Workshops'],
-  stats = [
-    { label: 'Lata doświadczenia', value: '8+' },
-    { label: 'Zrealizowane projekty', value: '45' },
-    { label: 'Satisfaction score', value: '97%' },
-  ],
-  socials = [
-    { label: 'Dribbble', url: '#', type: 'dribbble' },
-    { label: 'GitHub', url: '#', type: 'github' },
-    { label: 'Twitter', url: '#', type: 'twitter' },
-  ],
+const clamp = (value, min = 0, max = 100) => Math.min(Math.max(value, min), max);
+
+const round = (value, precision = 3) => parseFloat(value.toFixed(precision));
+
+const adjust = (value, fromMin, fromMax, toMin, toMax) =>
+  round(toMin + ((toMax - toMin) * (value - fromMin)) / (fromMax - fromMin));
+
+const easeInOutCubic = x => (x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2);
+
+const ProfileCardComponent = ({
+  avatarUrl = '<Placeholder for avatar URL>',
+  iconUrl = '<Placeholder for icon URL>',
+  grainUrl = '<Placeholder for grain URL>',
+  behindGradient,
+  innerGradient,
+  showBehindGradient = true,
+  className = '',
+  enableTilt = true,
+  enableMobileTilt = false,
+  mobileTiltSensitivity = 5,
+  miniAvatarUrl,
+  name = 'Javi A. Torres',
+  title = 'Software Engineer',
+  handle = 'javicodes',
+  status = 'Online',
+  contactText = 'Contact',
+  showUserInfo = true,
+  onContactClick
 }) => {
-  const initials = name
-    .split(' ')
-    .filter(Boolean)
-    .map((part) => part[0])
-    .join('')
-    .toUpperCase();
-  const badgeCode = `${initials}-${new Date().getFullYear().toString().slice(-2)}`;
+  const wrapRef = useRef(null);
+  const cardRef = useRef(null);
+
+  const animationHandlers = useMemo(() => {
+    if (!enableTilt) return null;
+
+    let rafId = null;
+
+    const updateCardTransform = (offsetX, offsetY, card, wrap) => {
+      const width = card.clientWidth;
+      const height = card.clientHeight;
+
+      const percentX = clamp((100 / width) * offsetX);
+      const percentY = clamp((100 / height) * offsetY);
+
+      const centerX = percentX - 50;
+      const centerY = percentY - 50;
+
+      const properties = {
+        '--pointer-x': `${percentX}%`,
+        '--pointer-y': `${percentY}%`,
+        '--background-x': `${adjust(percentX, 0, 100, 35, 65)}%`,
+        '--background-y': `${adjust(percentY, 0, 100, 35, 65)}%`,
+        '--pointer-from-center': `${clamp(Math.hypot(percentY - 50, percentX - 50) / 50, 0, 1)}`,
+        '--pointer-from-top': `${percentY / 100}`,
+        '--pointer-from-left': `${percentX / 100}`,
+        '--rotate-x': `${round(-(centerX / 5))}deg`,
+        '--rotate-y': `${round(centerY / 4)}deg`
+      };
+
+      Object.entries(properties).forEach(([property, value]) => {
+        wrap.style.setProperty(property, value);
+      });
+    };
+
+    const createSmoothAnimation = (duration, startX, startY, card, wrap) => {
+      const startTime = performance.now();
+      const targetX = wrap.clientWidth / 2;
+      const targetY = wrap.clientHeight / 2;
+
+      const animationLoop = currentTime => {
+        const elapsed = currentTime - startTime;
+        const progress = clamp(elapsed / duration);
+        const easedProgress = easeInOutCubic(progress);
+
+        const currentX = adjust(easedProgress, 0, 1, startX, targetX);
+        const currentY = adjust(easedProgress, 0, 1, startY, targetY);
+
+        updateCardTransform(currentX, currentY, card, wrap);
+
+        if (progress < 1) {
+          rafId = requestAnimationFrame(animationLoop);
+        }
+      };
+
+      rafId = requestAnimationFrame(animationLoop);
+    };
+
+    return {
+      updateCardTransform,
+      createSmoothAnimation,
+      cancelAnimation: () => {
+        if (rafId) {
+          cancelAnimationFrame(rafId);
+          rafId = null;
+        }
+      }
+    };
+  }, [enableTilt]);
+
+  const handlePointerMove = useCallback(
+    event => {
+      const card = cardRef.current;
+      const wrap = wrapRef.current;
+
+      if (!card || !wrap || !animationHandlers) return;
+
+      const rect = card.getBoundingClientRect();
+      animationHandlers.updateCardTransform(event.clientX - rect.left, event.clientY - rect.top, card, wrap);
+    },
+    [animationHandlers]
+  );
+
+  const handlePointerEnter = useCallback(() => {
+    const card = cardRef.current;
+    const wrap = wrapRef.current;
+
+    if (!card || !wrap || !animationHandlers) return;
+
+    animationHandlers.cancelAnimation();
+    wrap.classList.add('active');
+    card.classList.add('active');
+  }, [animationHandlers]);
+
+  const handlePointerLeave = useCallback(
+    event => {
+      const card = cardRef.current;
+      const wrap = wrapRef.current;
+
+      if (!card || !wrap || !animationHandlers) return;
+
+      animationHandlers.createSmoothAnimation(
+        ANIMATION_CONFIG.SMOOTH_DURATION,
+        event.offsetX,
+        event.offsetY,
+        card,
+        wrap
+      );
+      wrap.classList.remove('active');
+      card.classList.remove('active');
+    },
+    [animationHandlers]
+  );
+
+  const handleDeviceOrientation = useCallback(
+    event => {
+      const card = cardRef.current;
+      const wrap = wrapRef.current;
+
+      if (!card || !wrap || !animationHandlers) return;
+
+      const { beta, gamma } = event;
+      if (!beta || !gamma) return;
+
+      animationHandlers.updateCardTransform(
+        card.clientHeight / 2 + gamma * mobileTiltSensitivity,
+        card.clientWidth / 2 + (beta - ANIMATION_CONFIG.DEVICE_BETA_OFFSET) * mobileTiltSensitivity,
+        card,
+        wrap
+      );
+    },
+    [animationHandlers, mobileTiltSensitivity]
+  );
+
+  useEffect(() => {
+    if (!enableTilt || !animationHandlers) return;
+
+    const card = cardRef.current;
+    const wrap = wrapRef.current;
+
+    if (!card || !wrap) return;
+
+    const pointerMoveHandler = handlePointerMove;
+    const pointerEnterHandler = handlePointerEnter;
+    const pointerLeaveHandler = handlePointerLeave;
+    const deviceOrientationHandler = handleDeviceOrientation;
+
+    const handleClick = () => {
+      if (!enableMobileTilt || location.protocol !== 'https:') return;
+      if (typeof window.DeviceMotionEvent.requestPermission === 'function') {
+        window.DeviceMotionEvent.requestPermission()
+          .then(state => {
+            if (state === 'granted') {
+              window.addEventListener('deviceorientation', deviceOrientationHandler);
+            }
+          })
+          .catch(err => console.error(err));
+      } else {
+        window.addEventListener('deviceorientation', deviceOrientationHandler);
+      }
+    };
+
+    card.addEventListener('pointerenter', pointerEnterHandler);
+    card.addEventListener('pointermove', pointerMoveHandler);
+    card.addEventListener('pointerleave', pointerLeaveHandler);
+    card.addEventListener('click', handleClick);
+
+    const initialX = wrap.clientWidth - ANIMATION_CONFIG.INITIAL_X_OFFSET;
+    const initialY = ANIMATION_CONFIG.INITIAL_Y_OFFSET;
+
+    animationHandlers.updateCardTransform(initialX, initialY, card, wrap);
+    animationHandlers.createSmoothAnimation(ANIMATION_CONFIG.INITIAL_DURATION, initialX, initialY, card, wrap);
+
+    return () => {
+      card.removeEventListener('pointerenter', pointerEnterHandler);
+      card.removeEventListener('pointermove', pointerMoveHandler);
+      card.removeEventListener('pointerleave', pointerLeaveHandler);
+      card.removeEventListener('click', handleClick);
+      window.removeEventListener('deviceorientation', deviceOrientationHandler);
+      animationHandlers.cancelAnimation();
+    };
+  }, [
+    enableTilt,
+    enableMobileTilt,
+    animationHandlers,
+    handlePointerMove,
+    handlePointerEnter,
+    handlePointerLeave,
+    handleDeviceOrientation
+  ]);
+
+  const cardStyle = useMemo(
+    () => ({
+      '--icon': iconUrl ? `url(${iconUrl})` : 'none',
+      '--grain': grainUrl ? `url(${grainUrl})` : 'none',
+      '--behind-gradient': showBehindGradient ? (behindGradient ?? DEFAULT_BEHIND_GRADIENT) : 'none',
+      '--inner-gradient': innerGradient ?? DEFAULT_INNER_GRADIENT
+    }),
+    [iconUrl, grainUrl, showBehindGradient, behindGradient, innerGradient]
+  );
+
+  const handleContactClick = useCallback(() => {
+    onContactClick?.();
+  }, [onContactClick]);
 
   return (
-    <div className="profile-card-combined">
-      <Lanyard event="Reactbits Summit" name={name} role={title} status={availability} code={badgeCode} />
-      <article className="profile-card" aria-labelledby="profile-card-name">
-      <div className="profile-card__glow" aria-hidden="true" />
-      <header className="profile-card__header">
-        <div className="profile-card__avatar" aria-hidden="true">
-          <span>{initials}</span>
-        </div>
-        <div className="profile-card__identity">
-          <p className="profile-card__availability">{availability}</p>
-          <h2 className="profile-card__name" id="profile-card-name">
-            {name}
-          </h2>
-          <p className="profile-card__title">{title}</p>
-          <p className="profile-card__location">{location}</p>
-        </div>
-      </header>
-      <p className="profile-card__summary">{summary}</p>
-      <ul className="profile-card__skills">
-        {skills.map(skill => (
-          <li key={skill} className="profile-card__skill">
-            {skill}
-          </li>
-        ))}
-      </ul>
-      <dl className="profile-card__stats">
-        {stats.map(stat => (
-          <div key={stat.label} className="profile-card__stat">
-            <dt>{stat.label}</dt>
-            <dd>{stat.value}</dd>
+    <div ref={wrapRef} className={`pc-card-wrapper ${className}`.trim()} style={cardStyle}>
+      <section ref={cardRef} className="pc-card">
+        <div className="pc-inside">
+          <div className="pc-shine" />
+          <div className="pc-glare" />
+          <div className="pc-content pc-avatar-content">
+            <img
+              className="avatar"
+              src={avatarUrl}
+              alt={`${name || 'User'} avatar`}
+              loading="lazy"
+              onError={e => {
+                const target = e.target;
+                target.style.display = 'none';
+              }}
+            />
+            {showUserInfo && (
+              <div className="pc-user-info">
+                <div className="pc-user-details">
+                  <div className="pc-mini-avatar">
+                    <img
+                      src={miniAvatarUrl || avatarUrl}
+                      alt={`${name || 'User'} mini avatar`}
+                      loading="lazy"
+                      onError={e => {
+                        const target = e.target;
+                        target.style.opacity = '0.5';
+                        target.src = avatarUrl;
+                      }}
+                    />
+                  </div>
+                  <div className="pc-user-text">
+                    <div className="pc-handle">@{handle}</div>
+                    <div className="pc-status">{status}</div>
+                  </div>
+                </div>
+                <button
+                  className="pc-contact-btn"
+                  onClick={handleContactClick}
+                  style={{ pointerEvents: 'auto' }}
+                  type="button"
+                  aria-label={`Contact ${name || 'user'}`}
+                >
+                  {contactText}
+                </button>
+              </div>
+            )}
           </div>
-        ))}
-      </dl>
-      <div className="profile-card__actions">
-        <a className="profile-card__primary" href="#" role="button">
-          Zobacz portfolio
-        </a>
-        <div className="profile-card__socials" aria-label="Profile społecznościowe">
-          {socials.map(social => (
-            <a key={social.label} href={social.url} aria-label={social.label} className={`profile-card__social profile-card__social--${social.type}`}>
-              {socialIcons[social.type]}
-            </a>
-          ))}
+          <div className="pc-content">
+            <div className="pc-details">
+              <h3>{name}</h3>
+              <p>{title}</p>
+            </div>
+          </div>
         </div>
-      </div>
-      </article>
+      </section>
     </div>
   );
 };
+
+const ProfileCard = React.memo(ProfileCardComponent);
 
 export default ProfileCard;

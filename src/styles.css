@@ -73,7 +73,7 @@ body {
   font-size: clamp(2.75rem, 7vw, 4.5rem);
   font-weight: 700;
   letter-spacing: 0.15em;
-  text-transform: uppercase;
+  text-transform: none;
   text-align: center;
   color: rgba(248, 251, 255, 0.92);
 }

@@ -1,3 +1,4 @@
+import Lanyard from './Lanyard.jsx';
 import './ProfileCard.css';
 
 const socialIcons = {
@@ -36,12 +37,22 @@ const ProfileCard = ({
     { label: 'Twitter', url: '#', type: 'twitter' },
   ],
 }) => {
+  const initials = name
+    .split(' ')
+    .filter(Boolean)
+    .map((part) => part[0])
+    .join('')
+    .toUpperCase();
+  const badgeCode = `${initials}-${new Date().getFullYear().toString().slice(-2)}`;
+
   return (
-    <article className="profile-card" aria-labelledby="profile-card-name">
+    <div className="profile-card-combined">
+      <Lanyard event="Reactbits Summit" name={name} role={title} status={availability} code={badgeCode} />
+      <article className="profile-card" aria-labelledby="profile-card-name">
       <div className="profile-card__glow" aria-hidden="true" />
       <header className="profile-card__header">
         <div className="profile-card__avatar" aria-hidden="true">
-          <span>NW</span>
+          <span>{initials}</span>
         </div>
         <div className="profile-card__identity">
           <p className="profile-card__availability">{availability}</p>
@@ -80,7 +91,8 @@ const ProfileCard = ({
           ))}
         </div>
       </div>
-    </article>
+      </article>
+    </div>
   );
 };
 

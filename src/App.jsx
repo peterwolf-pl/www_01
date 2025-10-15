@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 import CardNav from './components/CardNav.jsx';
+import FallingText from './components/FallingText.jsx';
 import Hyperspeed from './components/Hyperspeed.jsx';
 import MagicBento from './components/MagicBento.jsx';
 import { hyperspeedPresets } from './components/hyperspeedPresets.js';
@@ -67,6 +68,19 @@ function App() {
         </header>
         <main className="main" aria-labelledby="magic-bento">
           <MagicBento id="magic-bento" items={highlights} />
+          <section className="falling-text-section" aria-label="Opis komponentów React Bits">
+            <FallingText
+              text={`React Bits is a library of animated and interactive React components designed to streamline UI development and simplify your workflow.`}
+              highlightWords={["React", "Bits", "animated", "components", "simplify"]}
+              highlightClass="highlighted"
+              trigger="hover"
+              backgroundColor="transparent"
+              wireframes={false}
+              gravity={0.56}
+              fontSize="2rem"
+              mouseConstraintStiffness={0.9}
+            />
+          </section>
         </main>
         <footer className="footer">
           <p className="footer__caption">

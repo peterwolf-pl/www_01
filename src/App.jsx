@@ -65,42 +65,30 @@ function App() {
       </div>
       <div className="content">
         <header className="header">
-          <CardNav items={navItems} />
+          
         </header>
-        <main className="main" aria-labelledby="magic-bento">
-          <MagicBento id="magic-bento" items={highlights} />
-          <section className="falling-text-section" aria-label="Opis komponentów React Bits">
-            <FallingText
-              text={`React Bits is a library of animated and interactive React components designed to streamline UI development and simplify your workflow.`}
-              highlightWords={["React", "Bits", "animated", "components", "simplify"]}
-              highlightClass="highlighted"
-              trigger="hover"
-              backgroundColor="transparent"
-              wireframes={false}
-              gravity={0.56}
-              fontSize="2rem"
-              mouseConstraintStiffness={0.9}
-            />
-          </section>
-          <section className="profile-card-section" aria-label="Profil projektantki">
+        
+           <main className="main" aria-labelledby="magic-bento">
+           <MagicBento id="magic-bento" items={highlights} />
+
+          <section className="profile-card-section" aria-label="Profil projektanta">
             <ProfileCard
-              name="Javi A. Torres"
-              title="Software Engineer"
-              handle="javicodes"
-              status="Online"
-              contactText="Contact Me"
-              avatarUrl="/path/to/avatar.jpg"
+              name="Peter Wolf"
+              title="web developer | ux designer"
+              handle="peterwolfpl"
+              status="online"
+              contactText="Kontakt"
+              avatarUrl="/avatar.jpg"
               showUserInfo={true}
               enableTilt={true}
-              enableMobileTilt={false}
+              enableMobileTilt={true}
               onContactClick={() => console.log('Contact clicked')}
             />
           </section>
         </main>
         <footer className="footer">
           <p className="footer__caption">
-            Ten szkielet korzysta z inspiracji komponentami Reactbits, zapewniając solidną bazę pod
-            dalszy rozwój.
+            peterwolf.pl
           </p>
         </footer>
       </div>

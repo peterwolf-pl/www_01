@@ -1,4 +1,5 @@
 import CardNav from './components/CardNav.jsx';
+import LightRays from './components/LightRays.jsx';
 import MagicBento from './components/MagicBento.jsx';
 
 const navItems = [
@@ -33,8 +34,21 @@ const highlights = [
 
 function App() {
   return (
-    <div className="app light-rays">
-      <div className="overlay" aria-hidden="true" />
+    <div className="app">
+      <div className="light-rays-wrapper" aria-hidden="true">
+        <LightRays
+          raysOrigin="top-center"
+          raysColor="#00ffff"
+          raysSpeed={1.5}
+          lightSpread={0.8}
+          rayLength={1.2}
+          followMouse
+          mouseInfluence={0.1}
+          noiseAmount={0.1}
+          distortion={0.05}
+          className="custom-rays"
+        />
+      </div>
       <div className="content">
         <header className="header">
           <CardNav items={navItems} />
